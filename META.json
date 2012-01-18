@@ -1,0 +1,231 @@
+{
+   "abstract" : "a library for language analysis.",
+   "author" : [
+      "Jorge Cunha Mendes <jorgecunhamendes@gmail.com>",
+      "Alberto SimÃµes <ambs@cpan.org>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.113640",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Lingua-FreeLing2",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::CBuilder" : 0,
+            "ExtUtils::PkgConfig" : "1.12",
+            "Test::Warn" : 0
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "File::Which" : 0,
+            "Module::Build" : "0.36"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : 0,
+            "Try::Tiny" : 0
+         }
+      }
+   },
+   "provides" : {
+      "Lingua::FreeLing2" : {
+         "file" : "lib/Lingua/FreeLing2.pm",
+         "version" : "0.01_02"
+      },
+      "Lingua::FreeLing2::Bindings" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::ListAnalysis" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::ListInt" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::ListParagraph" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::ListSentence" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::ListString" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::ListWord" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::TreeDepnode" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::TreeNode" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::VectorListInt" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::VectorListString" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::VectorWord" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::analysis" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::chart_parser" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::dep_tree" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::dep_txala" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::dependency_parser" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::depnode" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::disambiguator" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::document" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::fex" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::hmm_tagger" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::maco" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::maco_options" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::nec" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::node" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::paragraph" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::parse_tree" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::relax_tagger" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::semanticDB" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::sense_info" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::senses" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::sentence" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::splitter" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::tokenizer" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::traces" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindings::word" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::Bindingsc" : {
+         "file" : "lib/Lingua/FreeLing2/Bindings.pm",
+         "version" : 0
+      },
+      "Lingua::FreeLing2::HMMTagger" : {
+         "file" : "lib/Lingua/FreeLing2/HMMTagger.pm",
+         "version" : "0.02"
+      },
+      "Lingua::FreeLing2::MorphAnalyzer" : {
+         "file" : "lib/Lingua/FreeLing2/MorphAnalyzer.pm",
+         "version" : "0.01"
+      },
+      "Lingua::FreeLing2::Sentence" : {
+         "file" : "lib/Lingua/FreeLing2/Sentence.pm",
+         "version" : "0.02"
+      },
+      "Lingua::FreeLing2::Splitter" : {
+         "file" : "lib/Lingua/FreeLing2/Splitter.pm",
+         "version" : "0.02"
+      },
+      "Lingua::FreeLing2::Tokenizer" : {
+         "file" : "lib/Lingua/FreeLing2/Tokenizer.pm",
+         "version" : "0.01"
+      },
+      "Lingua::FreeLing2::Word" : {
+         "file" : "lib/Lingua/FreeLing2/Word.pm",
+         "version" : "0.02"
+      },
+      "Lingua::FreeLing2::Word::Analysis" : {
+         "file" : "lib/Lingua/FreeLing2/Word/Analysis.pm",
+         "version" : "0.02"
+      }
+   },
+   "release_status" : "testing",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.01_02"
+}

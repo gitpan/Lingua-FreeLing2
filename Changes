@@ -1,0 +1,16 @@
+Revision history for Lingua-FreeLing2
+
+0.01_02 Wed Jan 18 18:27:09 WET 2012
+       - Renamed FreeLing2 as FreeLing 3 is under development
+       - Use inheritance where possible instead of encapsulation
+
+0.01_01 Sun Jan 30 19:42:30 WET 2011
+       Initial release, includes fully developed:
+       - Lingua::FreeLing2::Tokenizer
+       - Lingua::FreeLing2::Splitter
+       - Lingua::FreeLing2::HMMTagger
+       And incomplete but functional modules:     
+       - Lingua::FreeLing2::MorphAnalyzer
+       - Lingua::FreeLing2::Word::Analysis
+       - Lingua::FreeLing2::Word
+       - Lingua::FreeLing2::Sentence
