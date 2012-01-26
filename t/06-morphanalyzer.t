@@ -3,60 +3,69 @@
 use warnings;
 use strict;
 
-use Test::More tests => 29;
+use Test::More tests => 35;
 use Test::Warn;
 use Lingua::FreeLing2::MorphAnalyzer;
 use Lingua::FreeLing2::Tokenizer;
 use Lingua::FreeLing2::Splitter;
 use Data::Dumper;
 
-my $maco = Lingua::FreeLing2::MorphAnalyzer->new("es",
-                                                AffixAnalysis => 1,
-                                                AffixFile => 'afixos.dat',
-                                                MultiwordsDetection => 1,
-                                                NumbersDetection => 1,
-                                                DatesDetection => 1,
-                                                PunctuationDetection => 1,
-                                                DictionarySearch => 1,
-                                                ProbabilityAssignment => 1,
-                                                QuantitiesDetection => 0,
-                                                NERecognition => 'NER_BASIC',
-                                                PunctuationFile => '../common/punct.dat',
-                                                LocutionsFile => 'locucions.dat',
-                                                ProbabilityFile => 'probabilitats.dat',
-                                                DictionaryFile => 'maco.db',
-                                                NPdataFile => 'np.dat',
-                                                QuantitiesFile => "",
-                                               );
+my %options = (
+               AffixAnalysis         => 1,
+               AffixFile             => 'afixos.dat',
+               MultiwordsDetection   => 1,
+               NumbersDetection      => 1,
+               DatesDetection        => 1,
+               PunctuationDetection  => 1,
+               DictionarySearch      => 1,
+               ProbabilityAssignment => 1,
+               QuantitiesDetection   => 0,
+               NERecognition         => 'NER_BASIC',
+               PunctuationFile       => '../common/punct.dat',
+               LocutionsFile         => 'locucions.dat',
+               ProbabilityFile       => 'probabilitats.dat',
+               DictionaryFile        => 'maco.db',
+               NPdataFile            => 'np.dat',
+               QuantitiesFile        => "",
+              );
+
+
+my $maco = Lingua::FreeLing2::MorphAnalyzer->new("es", %options);
 
 # defined
-ok($maco);
-isa_ok($maco => 'Lingua::FreeLing2::MorphAnalyzer');
-ok(exists($maco->{maco}));
-ok(exists($maco->{prefix}));
-ok(exists($maco->{maco_options}));
-isa_ok($maco->{maco}         => 'Lingua::FreeLing2::Bindings::maco');
-isa_ok($maco->{maco_options} => 'Lingua::FreeLing2::Bindings::maco_options');
+ok     $maco => 'We have a morphological analyzer';
+isa_ok $maco => 'Lingua::FreeLing2::MorphAnalyzer';
+
+ok exists($maco->{maco})         => 'Object has "maco" field';
+ok exists($maco->{prefix})       => 'Object has "prefix" field';
+ok exists($maco->{maco_options}) => 'Object has "maco_options" field';
+
+isa_ok $maco->{maco}         => 'Lingua::FreeLing2::Bindings::maco';
+isa_ok $maco->{maco_options} => 'Lingua::FreeLing2::Bindings::maco_options';
 
 warning_is
-  { ok(!$maco->analyze()) }
-  { carped => "Error: analyze argument isn't a list of sentences" };
+  { ok !$maco->analyze() => "Can't analyze nothing" }
+  { carped => "Error: analyze argument should be a list of sentences" },
+  "Warning is issued";
 
 warning_is
-  { ok(!$maco->analyze("")) }
-  { carped => "Error: analyze argument isn't a list of sentences" };
+  { ok !$maco->analyze("") => "Can't analyze empty string" }
+  { carped => "Error: analyze argument should be a list of sentences" },
+  "Warning is issued";
 
 warning_is
-  { ok(!$maco->analyze("foo")) }
-  { carped => "Error: analyze argument isn't a list of sentences" };
+  { ok !$maco->analyze("foo") => "Can't analyze a string" }
+  { carped => "Error: analyze argument should be a list of sentences" },
+  "Warning is issued";
 
 warning_is
-  { ok(!$maco->analyze(["foo","bar"])) }
-  { carped => "Error: analyze argument isn't a list of sentences" };
+  { ok !$maco->analyze(["foo","bar"])  => "Can't analyze a list of strings" }
+  { carped => "Error: analyze argument should be a list of sentences" },
+  "Warning is issued";
 
 my $text = <<EOT;
 2010 quedará como el año en el que la "economía española escapó", a
-duras penas, de la Gran Recesión. Pero también, como el año en el que
+duras penas, de la QHFdjhfdfsD. Pero también, como el año en el que
 la tasa de paro se instaló en el 20%. Además, la última cosecha
 estadística de la Encuesta de Población Activa (EPA) certifica lo que
 no fue: para dar por acabada la brutal destrucción de empleo que
@@ -74,43 +83,51 @@ my $spl = Lingua::FreeLing2::Splitter->new('es');
 
 my $tokens = $tok->tokenize($text);
 my $sentences = $spl->split($tokens);
-
-isa_ok($sentences->[0] => 'Lingua::FreeLing2::Sentence');
-#is($sentences->[0]->is_parsed, 0);
+isa_ok $sentences->[0] => 'Lingua::FreeLing2::Sentence';
 
 $sentences = $maco->analyze($sentences);
-
-isa_ok($sentences->[0] => 'Lingua::FreeLing2::Sentence');
-#is($sentences->[0]->is_parsed, 0);
+isa_ok $sentences->[0] => 'Lingua::FreeLing2::Sentence';
 
 my $sentence = $sentences->[0];
 my $words_have_lemma = 1;
-for my $word (@{$sentence->words}) {
+for my $word ($sentence->words) {
     $words_have_lemma = 0 unless $word->lemma;
 }
+ok $words_have_lemma => 'All analyzed words have a lemma';
 
 ## -- año --
 
-my $random_word = $sentence->words->[4];
-is($random_word->form  => "año");
-is($random_word->lemma => "año");
+my $random_word = ($sentence->words)[4];
+is $random_word->form  => "año", 'fifth word is "año"';
+is $random_word->lemma => "año", 'fifth word lemma is also "año"';
 
 my $analysis = $random_word->analysis;
-is(scalar(@$analysis) => 1);
+is scalar(@$analysis) => 1, "'año' has just one analysis";
 
-isa_ok($analysis => "ARRAY");
-isa_ok($analysis->[0] => "Lingua::FreeLing2::Word::Analysis");
+isa_ok $analysis => "ARRAY", "analysis";
+isa_ok $analysis->[0] => "Lingua::FreeLing2::Word::Analysis", "Each analysis";
 
-is($analysis->[0]->lemma  => "año");
-is($analysis->[0]->parole => "NCMS000");
-like($analysis->[0]->prob => qr/^\d(?:\.\d+)?$/);
+is $analysis->[0]->lemma  => "año", 'analysis lemma is "año"';
+is $analysis->[0]->parole => "NCMS000", 'POS';
+like $analysis->[0]->prob => qr/^\d(?:\.\d+)?$/, "probability is a number";
 
-ok(!$analysis->[0]->retokenizable);
+ok !$analysis->[0]->retokenizable, "This analysis is not retokenizable";
 
-## -- quedará -- ##
+## -- el -- ##
 
-my $other_word = $sentence->words->[1];
-is($other_word->form => "quedará");
-$analysis=$other_word->analysis;
-is(scalar(@$analysis) => 1);
-ok(!$analysis->[0]->retokenizable);
+my $other_word = ($sentence->words)[7];
+is $other_word->form => "que", "Seventh word is 'que'";
+#XXX - ok $other_word->in_dict;
+$analysis = $other_word->analysis;
+is scalar(@$analysis) => 2, "'que' has two possible analysis";
+
+for my $a (@$analysis) {
+    isa_ok $a => 'Lingua::FreeLing2::Word::Analysis', "Each analysis";
+    is $a->lemma, "que", "both lemma are 'que'";
+}
+isnt $analysis->[0]->parole, $analysis->[1]->parole, "POS differ for the two analysis";
+
+## -- QHFdjhfdfsD -- ##
+my $nonword = ($sentence->words)[19];
+is $nonword->form => "QHFdjhfdfsD", "twentieth word is 'QHFdjhfdfsD'";
+#XXX - ok $nonword->in_dict;

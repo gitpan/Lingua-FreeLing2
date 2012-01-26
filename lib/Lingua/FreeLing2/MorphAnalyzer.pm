@@ -194,11 +194,11 @@ sub analyze {
     my ($self, $sentences, %opts) = @_;
 
     unless (Lingua::FreeLing2::_is_sentence_list($sentences)) {
-        carp "Error: analyze argument isn't a list of sentences";
+        carp "Error: analyze argument should be a list of sentences";
         return undef;
     }
 
-    $sentences = $self->{maco}->analyze($sentences);
+    $sentences = $self->{maco}->analyze([map { $_->{sentence} } @$sentences]);
 
     for my $s (@$sentences) {
         $s = Lingua::FreeLing2::Sentence->_new_from_binding($s);
@@ -207,6 +207,18 @@ sub analyze {
     return $sentences;
 
 }
+
+
+
+### TODO: maco_options
+#
+# *set_active_modules = *Lingua::FreeLing2::Bindingsc::maco_options_set_active_modules;
+# *set_nummerical_points = *Lingua::FreeLing2::Bindingsc::maco_options_set_nummerical_points;
+# *set_data_files = *Lingua::FreeLing2::Bindingsc::maco_options_set_data_files;
+# *set_threshold = *Lingua::FreeLing2::Bindingsc::maco_options_set_threshold;
+#
+###
+
 
 1;
 
@@ -224,6 +236,7 @@ Jorge Cunha Mendes E<lt>jorgecunhamendes@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011 by Projecto Natura
+Copyright (C) 2011-2012 by Projecto Natura
 
 =cut
+

@@ -1,5 +1,14 @@
 Revision history for Lingua-FreeLing2
 
+0.01_03 Thu Jan 26 15:43:39 WET 2012
+       Added a couple new modules
+       - Lingua::FreeLing2::DepTxala
+       - Lingua::FreeLing2::ChartParser
+       - Lingua::FreeLing2::ParseTree
+       - Lingua::FreeLing2::Paragraph
+       - Lingua::FreeLing2::Document
+       - Lingua::FreeLing2::RelaxTagger
+
 0.01_02 Wed Jan 18 18:27:09 WET 2012
        - Renamed FreeLing2 as FreeLing 3 is under development
        - Use inheritance where possible instead of encapsulation

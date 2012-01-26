@@ -1,7 +1,7 @@
 package Lingua::FreeLing2::Sentence;
 use Lingua::FreeLing2::Word;
+use Lingua::FreeLing2::ParseTree;
 use Lingua::FreeLing2::Bindings;
-use parent -norequire, 'Lingua::FreeLing2::Bindings::sentence';
 
 use warnings;
 use strict;
@@ -44,13 +44,19 @@ to understand how to set/add words in the sentence.
 # XXX: make this a polymorphic new
 sub new {
     my $class = shift;
-    my $self = $class->SUPER::new();
+    my $self = { sentence => Lingua::FreeLing2::Bindings::sentence->new() };
     return bless $self => $class #amen
 }
 
 sub _new_from_binding {
     my ($class, $sentence) = @_;
-    return bless $sentence => $class #amen
+
+    my $self = bless { sentence => $sentence } => $class;
+    if ($sentence->is_parsed) {
+        $self->{parse_tree} = Lingua::FreeLing2::ParseTree->_new_from_sentence($self);
+    }
+
+    return $self;
 }
 
 =head2 ACESSORS
@@ -61,32 +67,17 @@ Current sentence acessors are:
 
 =item C<words>
 
-Returns a reference to a list of L<Lingua::FreeLing2::Word>.
+Returns a list of L<Lingua::FreeLing2::Word>.
 
 =cut
 
 sub words {
     my $self = shift;
-    my $words = $self->SUPER::get_words;
-    for (@$words) {
-        $_ = Lingua::FreeLing2::Word->_new_from_binding($_);
-    }
-    return $words;
+    my $words = $self->{sentence}->get_words;
+    return map {
+        Lingua::FreeLing2::Word->_new_from_binding($_)
+      } @$words;
 }
-
-=item C<is_parsed>
-
-Returns a boolean value stating if the sentence has been parsed or
-not.
-
-=cut
-
-# This should be directly called to the superclass
-# sub is_parsed {
-#     my $self = shift;
-#     return $self->SUPER::{sentence}->is_parsed;
-# }
-
 
 =item C<to_text>
 
@@ -96,7 +87,7 @@ Returns a string with words separated by a blank space.
 
 sub to_text {
     my $self = shift;
-    my $words = $self->SUPER::get_words;
+    my $words = $self->{sentence}->get_words;
     return join(" " => map { $_->get_form } @$words);
 }
 
@@ -106,9 +97,42 @@ sub to_text {
 # *get_parse_tree = *Lingua::FreeLing2::Bindingsc::sentence_get_parse_tree;
 # *get_dep_tree = *Lingua::FreeLing2::Bindingsc::sentence_get_dep_tree;
 # *set_dep_tree = *Lingua::FreeLing2::Bindingsc::sentence_set_dep_tree;
-# *is_dep_parsed = *Lingua::FreeLing2::Bindingsc::sentence_is_dep_parsed;
 # *words_begin = *Lingua::FreeLing2::Bindingsc::sentence_words_begin;
 # *words_end = *Lingua::FreeLing2::Bindingsc::sentence_words_end;
+
+=item C<parse_tree>
+
+Returns the current parse tree, if there is any.
+
+=cut
+
+sub parse_tree {
+    my $self = shift;
+
+    return $self->{parse_tree};
+}
+
+=item C<is_dep_parsed>
+
+Checks if the sentence has been parsed by a dependency parser.
+
+=cut
+
+sub is_dep_parsed {
+    my $self = shift;
+    return $self->{sentence}->is_dep_parsed();
+}
+
+=item C<is_parsed>
+
+Checks if the sentence has been parsed by a dependency parser.
+
+=cut
+
+sub is_parsed {
+    my $self = shift;
+    return $self->{sentence}->is_parsed();
+}
 
 1;
 
@@ -129,7 +153,7 @@ Jorge Cunha Mendes E<lt>jorgecunhamendes@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011 by Projecto Natura
+Copyright (C) 2011-2012 by Projecto Natura
 
 =cut
 

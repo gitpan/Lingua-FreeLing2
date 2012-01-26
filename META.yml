@@ -5,9 +5,9 @@ author:
   - 'Alberto SimÃµes <ambs@cpan.org>'
 build_requires:
   ExtUtils::CBuilder: 0
-  ExtUtils::PkgConfig: 1.12
   Test::Warn: 0
 configure_requires:
+  ExtUtils::PkgConfig: 1.12
   File::Which: 0
   Module::Build: 0.36
 dynamic_config: 1
@@ -20,7 +20,7 @@ name: Lingua-FreeLing2
 provides:
   Lingua::FreeLing2:
     file: lib/Lingua/FreeLing2.pm
-    version: 0.01_02
+    version: 0.01_03
   Lingua::FreeLing2::Bindings:
     file: lib/Lingua/FreeLing2/Bindings.pm
     version: 0
@@ -135,11 +135,29 @@ provides:
   Lingua::FreeLing2::Bindingsc:
     file: lib/Lingua/FreeLing2/Bindings.pm
     version: 0
+  Lingua::FreeLing2::ChartParser:
+    file: lib/Lingua/FreeLing2/ChartParser.pm
+    version: 0.01
+  Lingua::FreeLing2::DepTxala:
+    file: lib/Lingua/FreeLing2/DepTxala.pm
+    version: 0.01
+  Lingua::FreeLing2::Document:
+    file: lib/Lingua/FreeLing2/Document.pm
+    version: 0.01
   Lingua::FreeLing2::HMMTagger:
     file: lib/Lingua/FreeLing2/HMMTagger.pm
     version: 0.02
   Lingua::FreeLing2::MorphAnalyzer:
     file: lib/Lingua/FreeLing2/MorphAnalyzer.pm
+    version: 0.01
+  Lingua::FreeLing2::Paragraph:
+    file: lib/Lingua/FreeLing2/Paragraph.pm
+    version: 0.01
+  Lingua::FreeLing2::ParseTree:
+    file: lib/Lingua/FreeLing2/ParseTree.pm
+    version: 0.01
+  Lingua::FreeLing2::RelaxTagger:
+    file: lib/Lingua/FreeLing2/RelaxTagger.pm
     version: 0.01
   Lingua::FreeLing2::Sentence:
     file: lib/Lingua/FreeLing2/Sentence.pm
@@ -161,4 +179,4 @@ requires:
   Try::Tiny: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01_02
+version: 0.01_03

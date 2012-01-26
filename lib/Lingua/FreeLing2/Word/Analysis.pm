@@ -53,7 +53,7 @@ an C<Lingua::FreeLing2::Word::Analysis> object.
 sub new {
     my $class = shift;
     my $self = $class->SUPER::new();
-    return bless $self => $class #amen
+    return $class->_new_from_binding($self);
 }
 
 sub _new_from_binding {
@@ -67,7 +67,7 @@ These methods let you query an Analysis object:
 
 =over 4
 
-=item C<to_hash>
+=item C<as_hash>
 
 Retrieve a reference to a hash that includes the analysis lemma,
 parole (POS) and probability.
@@ -76,7 +76,7 @@ parole (POS) and probability.
 
 =cut
 
-sub to_hash {
+sub as_hash {
     my $self = shift;
     return +{
              lemma  => $self->lemma,
@@ -142,7 +142,7 @@ context but rather in definedness context.
 sub prob {
     my $self = shift;
     if ($_[0]) {
-        $self->SUPER::set_prob(Lingua::FreeLing2::_valid_prob($_[0]));
+        $self->SUPER::set_prob(Lingua::FreeLing2::_validate_prob($_[0] => 0));
     }
     elsif ($self->SUPER::has_prob) {
         $self->SUPER::get_prob;
@@ -189,9 +189,15 @@ sub retokenizable {
 }
 
 
-# XXX TODO = No idea how to make this work...
-#       prototype: analysis_get_short_parole(self,std::string const &);
-# *get_short_parole = *Lingua::FreeLing2::Bindingsc::analysis_get_short_parole;
+# # XXX TODO = No idea how to make this work...
+# #       prototype: analysis_get_short_parole(self,std::string const &);
+# # *get_short_parole = *Lingua::FreeLing2::Bindingsc::analysis_get_short_parole;
+# sub get_short_parole {
+#     my $self = shift;
+#     my $x = $self->SUPER::analysis_get_short_parole();
+#     use Data::Dumper;
+#     print STDERR Dumper($x);
+# }
 
 # XXX TODO = 
 # *get_senses_string = *Lingua::FreeLing2::Bindingsc::analysis_get_senses_string;

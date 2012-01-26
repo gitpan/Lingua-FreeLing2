@@ -7,19 +7,19 @@ use utf8;
 
 use Data::Dumper;
 
-use Test::More tests => 20;
+use Test::More tests => 16;
 use Test::Warn;
-use Lingua::FreeLing2::HMMTagger;
+use Lingua::FreeLing2::RelaxTagger;
 use Lingua::FreeLing2::MorphAnalyzer;
 use Lingua::FreeLing2::Tokenizer;
 use Lingua::FreeLing2::Splitter;
 
-my $tagger = Lingua::FreeLing2::HMMTagger->new("es");
+my $tagger = Lingua::FreeLing2::RelaxTagger->new("es");
 
 # defined
 ok($tagger);
-isa_ok($tagger => 'Lingua::FreeLing2::HMMTagger');
-isa_ok($tagger => 'Lingua::FreeLing2::Bindings::hmm_tagger');
+isa_ok($tagger => 'Lingua::FreeLing2::RelaxTagger');
+isa_ok($tagger => 'Lingua::FreeLing2::Bindings::relax_tagger');
 
 warning_is
   { ok(!$tagger->analyze()) }
@@ -58,9 +58,14 @@ retransmitía en directo de forma continua la revuelta.
 EOT
 
 my $tokenizer = Lingua::FreeLing2::Tokenizer->new('es');
-ok($tokenizer => "we have a tokenizer");
+ok $tokenizer => "we have a tokenizer";
+
 my $splitter  = Lingua::FreeLing2::Splitter->new('es');
-ok($splitter  => "we have a splitter");
+ok $splitter  => "we have a splitter";
+
+my $tokens    = $tokenizer->tokenize($text);
+my $sentences = $splitter->split($tokens);
+
 my $analyzer  = Lingua::FreeLing2::MorphAnalyzer->new("es",
                                                      AffixAnalysis   => 1,
                                                      AffixFile       => 'afixos.dat',
@@ -81,27 +86,29 @@ my $analyzer  = Lingua::FreeLing2::MorphAnalyzer->new("es",
                                                );
 ok($analyzer  => "we have an analyzer");
 
-my $tokens    = $tokenizer->tokenize($text);
-my $sentences = $splitter->split($tokens);
-
 $sentences = $analyzer->analyze($sentences);
 
-is(ref($sentences) => "ARRAY");
-isa_ok($sentences->[0] => 'Lingua::FreeLing2::Sentence');
+# is(ref($sentences) => "ARRAY");
+# isa_ok($sentences->[0] => 'Lingua::FreeLing2::Sentence');
 
-# is($sentences->[0]->is_parsed, 0);
+# # is($sentences->[0]->is_parsed, 0);
 
-my @words = $sentences->[0]->words;
-my $word_before = $words[6];
-isa_ok($word_before => "Lingua::FreeLing2::Word");
+# my @words = $sentences->[0]->words;
+# my $word_before = $words[6];
+# isa_ok($word_before => "Lingua::FreeLing2::Word");
 
+#use Data::Dumper;
+#print STDERR Dumper(($sentences->[0]->words)[$_]->as_hash) for (0..6);
 
 $sentences = $tagger->analyze($sentences);
-is(ref($sentences) => "ARRAY");
-isa_ok($sentences->[0] => 'Lingua::FreeLing2::Sentence');
+is ref($sentences) => "ARRAY";
+isa_ok $sentences->[0] => 'Lingua::FreeLing2::Sentence';
 
-#is($sentences->[0]->is_parsed, 1); ## freeling bug
 
-my $word_after = ($sentences->[0]->words)[6];
-isa_ok($word_after => "Lingua::FreeLing2::Word");
+#print STDERR Dumper(($sentences->[0]->words)[$_]->as_hash) for (0..6);
+
+# #is($sentences->[0]->is_parsed, 1); ## freeling bug
+
+# my $word_after = ($sentences->[0]->words)[6];
+# isa_ok($word_after => "Lingua::FreeLing2::Word");
 

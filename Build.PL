@@ -4,6 +4,7 @@ use warnings;
 use Carp;
 use lib 'inc';
 use MyBuilder;
+use ExtUtils::PkgConfig;
 
 use File::Which;
 use File::Spec;
@@ -29,6 +30,15 @@ if ($ENV{FL_DATADIR}) {
 $data_dir = guess_data_dir($prefix) if !$data_dir;
 print STDERR " - FreeLing data dir: $data_dir\n";
 
+## Guess pcre
+my %pcre = ExtUtils::PkgConfig->find('libpcre');
+if (!$pcre{libs}) {
+    warn "libcpre not found...?\n";
+    exit 0;
+}
+my $pcre = $pcre{libs};
+print STDERR " - pcre lib flags: $pcre\n";
+
 
 ## Builder...
 my $builder = MyBuilder->new
@@ -42,11 +52,11 @@ my $builder = MyBuilder->new
    needs_compiler => 1,
    recursive_test_files => 1,
    configure_requires => {
+                          'ExtUtils::PkgConfig' => '1.12',
                           'Module::Build' => '0.36',
                           'File::Which' => '0'
                          },
    build_requires => {
-                      'ExtUtils::PkgConfig' =>'1.12',
                       'Test::Warn' => '0',
                      },
    requires => {
@@ -62,7 +72,7 @@ my $builder = MyBuilder->new
 
 $builder->config_data(fl_prefix  => $prefix);
 $builder->config_data(fl_datadir => $data_dir);
-
+$builder->notes(pcre_libs => $pcre);
 $builder->create_build_script;
 
 

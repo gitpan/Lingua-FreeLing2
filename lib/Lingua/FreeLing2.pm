@@ -3,30 +3,61 @@ package Lingua::FreeLing2;
 use strict;
 use warnings;
 
+use v5.10;
+
 use Carp;
 use Try::Tiny;
 use Lingua::FreeLing2::ConfigData;
 use File::Spec::Functions 'catfile';
 
-our $VERSION = "0.01_02";
+our $VERSION = "0.01_03";
 
-sub _valid_option {
-    my ($value, $type) = @_;
-    return ($value && exists($type->{$value})) ? $type->{$value} : undef;
+sub _validate_option {
+    my ($value, $type, $default) = @_;
+    if (defined($value) && exists($type->{$value})) {
+        return $type->{$value};
+    } else {
+        carp "Option '$value' not valid." if defined $value;
+        return $type->{$default};
+    }
 }
 
-sub _valid_bool {
-    my $value = shift;
-    return $value ? 1 : 0;
+sub _validate_bool {
+    my ($value, $default) = @_;
+    if (defined($value)) {
+        return $value ? 1 : 0;
+    } else {
+        return $default;
+    }
 }
 
-sub _valid_prob {
-    my $value = shift;
-    if ($value =~ /(\d+(?:\.\d+)? | \.\d+)/x && $1 >= 0 && $1 <= 1) {
+sub _validate_integer {
+    my ($value, $default) = @_;
+    if (defined($value) && $value =~ /^\d+$/) {
+        $value
+    } else {
+        carp "Setting weird value as integer." if defined $value;
+        return $default;
+    }
+}
+
+sub _validate_real {
+    my ($value, $default) = @_;
+    if (defined($value) && $value =~ /^\d+(?:\.\d+)?|\d*\.\d+$/) {
+        $value
+    } else {
+        carp "Setting weird value as a real." if defined $value;
+        return $default;
+    }
+}
+
+sub _validate_prob {
+    my ($value, $default) = @_;
+    if (defined($value) && $value =~ /(\d+(?:\.\d+)? | \.\d+)/x && $1 >= 0 && $1 <= 1) {
         return $1
     } else {
-        carp "Setting weird value as a probability value.";
-        return 0
+        carp "Setting weird value as a probability value." if defined $value;
+        return $default;
     }
 }
 
@@ -56,7 +87,7 @@ sub _is_sentence_list {
     for my $w (@$l) {
         my $fail = 0;
         try {
-            $fail = 1 unless $w->isa("Lingua::FreeLing2::Bindings::sentence");
+            $fail = 1 unless $w->isa("Lingua::FreeLing2::Sentence");
         } catch {
             $fail = 1;
         };
@@ -65,7 +96,7 @@ sub _is_sentence_list {
     return 1;
 }
 
-!0;
+1
 
 __END__
 

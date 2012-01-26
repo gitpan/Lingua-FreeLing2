@@ -98,19 +98,13 @@ sub new {
     $language ||= lc($ops{LanguageCode});
     die "Could not guess a language code!" unless $language;
 
-    my $retok = Lingua::FreeLing2::_valid_bool($ops{Retokenize}) || 0; # bool
-    my $amb   = Lingua::FreeLing2::_valid_option($ops{AmbiguityResolution},
-                                                {
-                                                 FORCE_NONE   => 0,
-                                                 FORCE_TAGGER => 1,
-                                                 FORCE_RETOK  => 2,
-                                                }) || 0;
-
-    # my $self = {
-    #             datafile  => $lang,
-    #             tagger => Lingua::FreeLing2::Bindings::hmm_tagger->new($language, $lang,
-    #                                                                   $retok, $amb),
-    #            };
+    my $retok = Lingua::FreeLing2::_validate_bool($ops{Retokenize} => 0); # bool
+    my $amb   = Lingua::FreeLing2::_validate_option($ops{AmbiguityResolution},
+                                                    {
+                                                     FORCE_NONE   => 0,
+                                                     FORCE_TAGGER => 1,
+                                                     FORCE_RETOK  => 2,
+                                                    }, 'FORCE_NONE');
 
     my $self = $class->SUPER::new($language, $lang, $retok, $amb);
     return bless $self => $class
@@ -133,7 +127,7 @@ sub analyze {
         return undef;
     }
 
-    $sentences = $self->SUPER::analyze($sentences);
+    $sentences = $self->SUPER::analyze([map { $_->{sentence} } @$sentences]);
 
     for my $s (@$sentences) {
         $s = Lingua::FreeLing2::Sentence->_new_from_binding($s);

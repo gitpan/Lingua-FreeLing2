@@ -7,7 +7,7 @@ use strict;
 use Config;
 use Carp;
 
-use ExtUtils::PkgConfig;
+
 use ExtUtils::Mkbootstrap;
 use Config::AutoConf;
 
@@ -43,15 +43,7 @@ sub ACTION_compile_xscode {
     my $lib_file = catfile( $archdir => "Bindings.$Config{dlext}" );
     if ( !$self->up_to_date( [ $object, $bs_file ], $lib_file ) ) {
 
-        my %pcre = ExtUtils::PkgConfig->find('libpcre');
-        if (!$pcre{libs}) {
-            warn "libcpre not found...?\n";
-            exit 1;
-        }
-        my $pcre = $pcre{libs};
-
-        #        my $boost_mt = Config::AutoConf->check_lib("boost_filesystem-mt","init");
-        # $boost_mt = $boost_mt ? "-mt" : "";
+        my $pcre = $self->notes('pcre_libs');
 
         $cbuilder->link(
                         module_name => 'Lingua::FreeLing2::Bindings',

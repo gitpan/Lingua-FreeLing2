@@ -3,24 +3,21 @@
   - Word::Analysis                             (missing sense support)
   - Word                          (missing a lot of setters/selectors)
   - Sentence    (missing some selectors, and vector inherited methods)
+  - Paragraph                                        (mostly complete)
+  - MorphAnalyzer                                 (needs more testing)
+  - RelaxTagger                                   (needs more testing)
 
  Incomplete modules:
-  - MorphAnalyzer (maco & maco_options)
+  - Document
+  - ParseTree (node)    (Problems when accessing leafs from parseTree)
+  - ChartParser           (Complete if ParseTree would work correctly)
+  - dep_txala
 
  Missing modules:
-  - relax_tagger
-  - node
-  - parse_tree
-  - depnode
-  - dep_tree
-  - paragraph
-  - document
+  - dep_tree  <-- next step (will include depnode)
   - fex
   - traces
   - nec
-  - chart_parser
-  - dependency_parser
-  - dep_txala
   - senses
   - disambiguator
   - sense_info
@@ -38,3 +35,4 @@
   - VectorListString
   - TreeNode
   - TreeDepnode
+  - dependency_parser

@@ -42,6 +42,7 @@
  using namespace std;
 %}
 
+
 %include std_string.i
 %include std_list.i
 %include std_vector.i
@@ -57,6 +58,7 @@
 %template(ListInt) std::list<int>;
 %template(VectorListInt) std::vector<std::list<int> >;
 %template(VectorListString) std::vector<std::list<std::string> >;
+
 
 
 ###############  FRIES #####################
@@ -297,7 +299,6 @@ class node {
     bool is_chunk(void) const;
     void set_chunk(const int);
     int  get_chunk_ord(void) const;
-
 };
 
 class parse_tree : public tree<node> {
@@ -544,6 +545,23 @@ class dep_txala : public dependency_parser {
    dep_txala(const std::string &, const std::string &);
    /// parse sentences in list, return analyzed copy
    std::list<sentence> analyze(const std::list<sentence> &);
+%extend {
+    std::list<sentence> my_analyze(const std::string &txala_file,
+                                   const std::string &chart_file,
+                                   const std::list<sentence> &ls) {
+        // XXX - we can try later to reuse the 'self'
+        chart_parser::chart_parser parser(chart_file);
+        string ss = parser.get_start_symbol();
+
+        list<sentence> x = ls;
+        parser.analyze(x);
+
+        dep_txala::dep_txala dep(txala_file, ss);
+        dep.analyze(x);
+
+        return x;
+    }
+ }
 };
 
 

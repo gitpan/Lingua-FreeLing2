@@ -43,7 +43,7 @@ returned.
 sub new {
     my $class = shift;
     my $word = $class->SUPER::new(@_);
-    return bless $word => $class #amen
+    return $class->_new_from_binding($word);
 }
 
 sub _new_from_binding {
@@ -58,14 +58,14 @@ information:
 
 =over 4
 
-=item C<to_hash>
+=item C<as_hash>
 
 Returns a reference to a hash with the form, lemma and parole (POS) of
 the word.
 
 =cut
 
-sub to_hash {
+sub as_hash {
     my $self = shift;
     return +{
              form   => $self->form,
@@ -150,18 +150,34 @@ Set/retrieve word form.
 
    my $word_form = $word->form;
 
-=back
-
 =cut
 
 sub form {
-    my $self = shift @_;
+    my $self = shift;
     if ($_[0]) {
         $self->SUPER::set_form(shift @_)
     } else {
         $self->SUPER::get_form;
     }
 }
+
+# *found_in_dict = *Lingua::FreeLing2::Bindingsc::word_found_in_dict;
+
+=item C<in_dict>
+
+Returns true if the word was found in the dictionary, false otherwise.
+B<FIXME:> at the moment this method is always returning true.
+
+=cut
+
+sub in_dict {
+    my $self = shift;
+    return $self->SUPER::found_in_dict;
+}
+
+=pod
+
+=back
 
 =head2 TODO
 
@@ -184,7 +200,6 @@ there is time.
 # *get_senses_string = *Lingua::FreeLing2::Bindingsc::word_get_senses_string;
 # *get_span_start = *Lingua::FreeLing2::Bindingsc::word_get_span_start;
 # *get_span_finish = *Lingua::FreeLing2::Bindingsc::word_get_span_finish;
-# *found_in_dict = *Lingua::FreeLing2::Bindingsc::word_found_in_dict;
 # *set_found_in_dict = *Lingua::FreeLing2::Bindingsc::word_set_found_in_dict;
 # *has_retokenizable = *Lingua::FreeLing2::Bindingsc::word_has_retokenizable;
 # *set_span = *Lingua::FreeLing2::Bindingsc::word_set_span;
